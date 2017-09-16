@@ -25,13 +25,18 @@ CYCLES(c,cur1, "Block")
   v[0]=VS(cur,"IdADim");
   //cur2=SEARCH_CND("IdDim",v[0]);
   cur2=cur->hook;
-  v[1]=VS(cur,"x");
+  if(VS(cur2,"InConsortium")==0)
+    v[1]=VS(cur,"x");
+  else
+    v[1]=VS(cur2->hook,"cX");  
   WRITES(cur2,"X",v[1]);
   }
  }
 v[2]=V("FunFitness");
 
 RESULT(v[2] )
+
+
 
 EQUATION("Fit")
 /*
@@ -50,12 +55,30 @@ if(v[9]==1 && v[10]>0)
 
 v[0]=VS_CHEAT(p->up->up->up,"ComputeFit", p);
 
+cur=NULL;
+while(cur==NULL)
+{
 cur=RNDDRAWFAIR("Block");
-v[1]=VS(cur,"NDimBlock");
+v[30]=0;
+CYCLES(cur, cur1, "ADim")
+ {
+  if(VS(cur1->hook,"InConsortium")==0)
+    v[30]++;
+ }
+ if(v[30]==0)
+  cur=NULL; 
+}
+//v[1]=VS(cur,"NDimBlock");
+v[1]=v[30];
 v[2]=rnd_integer(1,v[1]);
 WRITE("CounterMutation",v[2]-1);
 CYCLES(cur, cur1, "ADim")
-  WRITES(cur1,"adflag",1);
+  {
+   if(VS(cur1->hook,"InConsortium")==0)
+     WRITES(cur1,"adflag",1);
+   else
+     WRITES(cur1,"adflag",0);     
+  } 
 
 v[4]=VS(p->up->up->up,"D");
 
@@ -159,402 +182,6 @@ CYCLE(cur, "Link")
 RESULT(v[0] )
 
 
-EQUATION("X")
-/*
-Comment
-*/
-v[2]=UNIFORM(98,102);
-v[1]=1/V("D");
-v[3]=round(v[2]*v[1]);
-v[4]=v[3]/v[1];
-/*
-v[0]=V("IdDim");
-if(v[0]==1)
- v[2]=UNIFORM(97.5,98.5);
-else
- v[2]=UNIFORM(99.5,100.5);
-*/
-
-RESULT(v[4] )
-//RESULT(UNIFORM(98,99) )
-
-EQUATION("IsPeak")
-/*
-Comment
-*/
-v[0]=V("D");
-v[1]=V("Fitness");
-v[2]=0;
-CYCLE(cur, "Dim")
- {
-  INCRS(cur,"X",v[0]);
-  v[3]=V("FunFitness");
-  if(v[3]>v[1])
-   v[2]=1;
-  INCRS(cur,"X",-2*v[0]);
-  v[3]=V("FunFitness");
-  if(v[3]>v[1])
-   v[2]=1;   
-  INCRS(cur,"X",v[0]);  
- }
- 
-v[4]=v[2]==1?0:1;
-RESULT(v[4] )
-
-EQUATION("Steepest2")
-/*
-Compute the local maximum that can be reached from the current point, using, at each step, the steepest dimension.
-
-To fix the problem at the first version I will limit the possibility to switch direction only once
-*/
-v[2]=0;
-v[0]=V("D");
-v[1]=V("Fitness");
-
-CYCLE(cur, "Dim")
- {
-  v[5]=VS(cur,"X");
-  WRITES(cur,"Xc",v[5]);
-  WRITES(cur,"app",1);
- }
- 
-v[10]=-1;
-v[20]=-1;
-while(v[2]==0)
- {
-  v[10]++; //counter
-  //until a local peak is found
-  v[2]=1; //assume it is a peak
-
- CYCLE(cur, "Dim") //for any dimensiion
-  {
-  v[6]=0; //assume no improvement
-  if(VS(cur, "app")!=0)
-   {
-  INCRS(cur,"X",v[0]); //try right
-  v[3]=V("FunFitness");
-  if(v[3]>v[1]) //improved
-   {
-    v[1]=v[3];//record new fitness
-    v[6]=1; //record right
-   } 
-  INCRS(cur,"X",-2*v[0]); //try left
-  v[3]=V("FunFitness");
-  if(v[3]>v[1])
-   {
-    v[1]=v[3];   //record new fitness
-    v[6]=-1; //record left
-   } 
-  INCRS(cur,"X",v[0]);  //restore original X
-  if(v[6]!=0)
-   { //improvement found
-    v[7]=VS(cur,"IdDim"); //record dimesnion
-    v[8]=v[6];//record direction
-    v[2]=0; //keep on searching
-   } 
-  }
-  }
-  if(v[2]==0)
-   {//improvement found
-   
-    cur=SEARCH_CND("IdDim",v[7]);
-    v[9]=v[0]*v[8];
-    INCRS(cur,"X",v[9]);
-    if(v[20]==-1)
-     v[20]=v[7];
-    if(v[20]!=v[7])
-     {
-      cur1=SEARCH_CND("IdDim",v[20]);
-      WRITES(cur1,"app",0);
-     }  
-
-   }
- }
-CYCLE(cur, "Dim")
- {
-  v[5]=VS(cur,"Xc");
-  WRITELS(cur,"X",v[5],t);
- }
-
-WRITE("StepSteepest",v[10]);
-if(v[1]>0)
- V("RecordPath");
-
-RESULT(v[1] )
-
-EQUATION("RandomWalk")
-/*
-Move choosing randomly to a fitness-increasing dimension
-*/
-
-v[2]=0;
-v[0]=V("D");
-v[30]=v[0]/10;
-//v[20]=V("Controlla");
-v[20]=0;
-if(v[20]==1)
- v[20]=INTERACT("Init",v[20]);
-
-v[51]=v[1]=V("FunFitness");
-
-
-
-CYCLE(cur, "Dim")
- {
-  v[5]=VS(cur,"X");
-  WRITES(cur,"Xc",v[5]);
- }
- 
-v[10]=-1;
-while(v[2]==0)
- {
-  v[10]++; //counter
-  //until a local peak is found
-  v[2]=1; //assume it is a peak
-   CYCLE(cur, "Dim") //for any dimensiion
-    WRITES(cur,"app",0);
-if(v[20]==1)
- v[20]=INTERACT("Continue",v[20]);
- v[6]=0; //assume no improvement
- CYCLE(cur, "Dim") //for any dimensiion
-  {
-
-  v[31]=INCRS(cur,"X",v[0]); //try right
-  v[3]=V("FunFitness");
-  if(v[3]>v[1]) //improved
-   {
-
-      v[6]++; 
-      WRITES(cur,"app",1);
-      WRITES(cur,"beta",1);
-   } 
-   
-  v[31]=INCRS(cur,"X",-2*v[0]); //try left
-  v[3]=V("FunFitness");
-  if(v[3]>v[1])
-   {
-    v[6]++; 
-    WRITES(cur,"app",1);
-    WRITES(cur,"beta",-1);
-
-   } 
-//  WRITES(cur,"MinusFit",v[3]);
-  INCRS(cur,"X",v[0]);  //restore original X
-  
-  }
- if(v[10]==1)
-  WRITE("NumDir",v[6]);
-
-  if(v[6]>0)
-   {//improvement found
-   if(v[20]==1)
-    INTERACT("Improvement found",v[6]);
-
-    cur=RNDDRAW("Dim","app");
-    
-    v[8]=VS(cur,"beta");
-    v[9]=v[0]*v[8];
-   if(v[20]==1)
-    INTERACTS(cur,"Chosen dim",v[9]);
-    INCRS(cur,"X",v[9]);
-    v[1]=V("FunFitness");
-    v[2]=0;
-   }
-   else
-   {
-    if(v[20]==1 || v[20]==2 )
-    INTERACT("Improvement NOT found",v[1]);
-
-   }
- }
-CYCLE(cur, "Dim")
- {
-  WRITES(cur,"Xfin",VS(cur,"X"));
-  v[5]=VS(cur,"Xc");
-  WRITELS(cur,"X",v[5],t);
- }
-
-WRITE("StepSteepest",v[10]);
-if(v[1]>0)
- V("RecordPath");
-
-
-RESULT(v[1] )
-
-EQUATION("Steepest")
-/*
-Compute the local maximum that can be reached from the current point, using, at each step, the steepest dimension.
-
-It is not satisfactory, since it melts down on the fringes: sometimes it can "ride" them up to the top, and other times it fails immediately. This is not good.
-*/
-
-v[2]=0;
-v[0]=V("D");
-v[20]=V("Controlla");
-v[30]=0;
-
-v[51]=v[1]=V("FunFitness");
-
-CYCLE(cur, "Dim")
- {
-  v[5]=VS(cur,"X");
-  WRITES(cur,"Xc",v[5]);
- }
- 
-v[10]=-1;
-while(v[2]==0)
- {
-  v[10]++; //counter
-  //until a local peak is found
-  v[2]=1; //assume it is a peak
-  
- CYCLE(cur, "Dim") //for any dimensiion
-  {
-  v[6]=0; //assume no improvement
-  INCRS(cur,"X",v[0]); //try right
-  v[3]=V("FunFitness");
-  if(v[3]>v[1]+v[30]) //improved
-   {
-    v[1]=v[3];//record new fitness
-    v[6]=1; //record right
-   } 
-  INCRS(cur,"X",-2*v[0]); //try left
-  v[3]=V("FunFitness");
-  if(v[3]>v[1]+v[30])
-   {
-    v[1]=v[3];   //record new fitness
-    v[6]=-1; //record left
-   } 
-  INCRS(cur,"X",v[0]);  //restore original X
-  if(v[6]!=0)
-   { //improvement found
-    v[7]=VS(cur,"IdDim"); //record dimesnion
-    v[8]=v[6];//record direction
-    v[2]=0; //keep on searching
-   } 
-  }
-  if(v[20]==2)
-   {
-    plog("\n");
-    CYCLE(cur, "Dim")
-    {
-     v[21]=VS(cur,"X");
-     sprintf(msg, "%g\t",v[21]);
-     plog(msg);
-    }
-    sprintf(msg, "%g",v[1]);
-    plog(msg);
-    
-   }  
-  if(v[2]==0)
-   {//improvement found
-   
-    cur=SEARCH_CND("IdDim",v[7]);
-    v[9]=v[0]*v[8];
-    INCRS(cur,"X",v[9]);
-    v[30]=(v[1]-v[51])*0;
-    v[51]=v[1];
-
-   }
- }
-if(v[20]==2) 
- {
-  sprintf(msg,"\nStepSteepes %g %g %g\n",v[10], v[51],v[1]);
-  plog(msg);
- } 
- 
-CYCLE(cur, "Dim")
- {
-  v[5]=VS(cur,"Xc");
-  WRITELS(cur,"X",v[5],t);
- }
-
-WRITE("StepSteepest",v[10]);
-if(v[1]>0)
- V("RecordPath");
-
-RESULT(v[1] )
-
-
-EQUATION("Steepest3")
-/*
-Compute the local maximum that can be reached from the current point, using, at each step, the steepest dimension.
-
-It is not satisfactory, since it melts down on the fringes: sometimes it can "ride" them up to the top, and other times it fails immediately. This is not good.
-
-Attempts to fix the zig-zag problem on the edges by testing D for each step, but making the actual steps of D/2
-
-*/
-
-v[2]=0;
-v[0]=V("D");
-v[21]=v[1]=V("Fitness");
-
-CYCLE(cur, "Dim")
- {
-  v[5]=VS(cur,"X");
-  WRITES(cur,"Xc",v[5]);
- }
- 
-v[10]=-1;
-while(v[2]==0)
- {
-  v[10]++; //counter
-  //until a local peak is found
-  v[2]=1; //assume it is a peak
-  
- CYCLE(cur, "Dim") //for any dimensiion
-  {
-  v[6]=0; //assume no improvement
-  INCRS(cur,"X",v[0]); //try right
-  v[3]=V("FunFitness");
-  if(v[3]>v[1]) //improved
-   {
-    v[1]=v[3];//record new fitness
-    v[6]=1; //record right
-   } 
-  INCRS(cur,"X",-2*v[0]); //try left
-  v[3]=V("FunFitness");
-  if(v[3]>v[1])
-   {
-    v[1]=v[3];   //record new fitness
-    v[6]=-1; //record left
-   } 
-  INCRS(cur,"X",v[0]);  //restore original X
-  if(v[6]!=0)
-   { //improvement found
-    v[7]=VS(cur,"IdDim"); //record dimesnion
-    v[8]=v[6];//record direction
-    v[2]=0; //keep on searching
-   } 
-  }
-  
-  if(v[2]==0)
-   {//improvement found
-    cur=SEARCH_CND("IdDim",v[7]);
-    v[9]=v[0]*v[8]/2;
-    INCRS(cur,"X",v[9]);
-    v[11]=V("FunFitness");
-    if(v[11]<v[21])
-     {v[2]=1;
-      INCRS(cur,"X",-1*v[9]);
-      v[1]=V("FunFitness");
-     } 
-    else
-     v[21]=v[1]=v[11]; 
-   }
- }
-CYCLE(cur, "Dim")
- {
-  v[5]=VS(cur,"Xc");
-  WRITELS(cur,"X",v[5],t);
- }
-
-WRITE("StepSteepest",v[10]);
-if(v[1]>0)
- V("RecordPath");
-
-RESULT(v[1] )
 
 
 EQUATION("c")
@@ -600,84 +227,6 @@ v[2]=-v[1];
 
 v[3]=v[0]+UNIFORM(v[1],v[2]);
 RESULT(v[3] )
-
-
-EQUATION("RecordPath")
-/*
-Comment
-*/
-
-v[2]=0;
-v[0]=V("D");
-v[1]=V("Fitness");
-
-plog("\\nBegins\\n");
-CYCLE(cur, "Dim")
- {
-  v[5]=VS(cur,"X");
-  WRITES(cur,"Xc",v[5]);
-  sprintf(msg, " %g", v[5]);
-  plog(msg);
- }
- 
-plog("\\n");
-v[10]=-1;
-while(v[2]==0)
- {
-  v[10]++; //counter
-  //until a local peak is found
-  v[2]=1; //assume it is a peak
- CYCLE(cur, "Dim") //for any dimensiion
-  {
-   v[6]=0; //assume no improvement
-  INCRS(cur,"X",v[0]); //try right
-  v[3]=V("FunFitness");
-  if(v[3]>v[1]) //improved
-   {
-    v[1]=v[3];//record new fitness
-    v[6]=1; //record right
-   } 
-  INCRS(cur,"X",-2*v[0]); //try left
-  v[3]=V("FunFitness");
-  if(v[3]>v[1])
-   {
-    v[1]=v[3];   //record new fitness
-    v[6]=-1; //record left
-   } 
-  INCRS(cur,"X",v[0]);  //restore original X
-  if(v[6]!=0)
-   { //improvement found
-    v[7]=VS(cur,"IdDim"); //record dimesnion
-    v[8]=v[6];//record direction
-    v[2]=0; //keep on searching
-   } 
-  }
-  
-  if(v[2]==0)
-   {//improvement found
-    sprintf(msg, "%d(%d)", (int)v[7], (int)v[8]);
-    plog(msg);
-    cur=SEARCH_CND("IdDim",v[7]);
-    v[9]=v[0]*v[8];
-    v[13]=INCRS(cur,"X",v[9]);
-    CYCLE(cur, "Dim")
-     {
-      v[5]=VS(cur,"X");
-      sprintf(msg, " %g", v[5]);
-      plog(msg);
-     }
-     plog("\\n");
-   }
- }
-CYCLE(cur, "Dim")
- {
-  v[5]=VS(cur,"Xc");
-  WRITELS(cur,"X",v[5],t);
- }
-
-if(V("StepSteepest")!=v[10])
- INTERACT("cazzo", v[10]);
-RESULT(v[1] )
 
 
 EQUATION("InitA")
@@ -755,9 +304,132 @@ Initialize all worlds
 CYCLE(cur, "World")
  {
   VS(cur,"InitA");
+  VS(cur,"CInit");
  }
 PARAMETER
 RESULT( 1)
+
+EQUATION("ConsortiumRD")
+/*
+Research in the Consortium
+*/
+
+
+CYCLE(cur, "CDim")
+ {
+  v[0]=VS(cur,"cX");
+  WRITES(cur->hook,"X",v[0]);
+  WRITES(cur,"cXtemp",v[0]);
+  WRITES(cur,"capp",1);
+ }
+
+v[1]=V("numDimConsortium");
+v[2]=rnd_integer(1,v[1]);
+v[4]=V("D");
+for(v[3]=0; v[3]<v[2]; v[3]++)
+ {
+  cur=RNDDRAW("CDim","capp");
+  v[5]=RND<0.5?v[4]:v[4]*-1;
+  INCRS(cur,"cX",v[5]);
+  WRITES(cur,"capp",0);
+ }
+
+v[0]=v[1]=v[20]=v[21]=0;
+
+cur=SEARCHS(p->up,"Class");
+
+CYCLES(cur, cur1, "Agent")
+ {v[21]++;
+  v[10]=VS(cur,"Fit");
+  v[20]+=v[10];
+  CYCLES(cur1, cur2, "Block")
+   {
+    CYCLES(cur2, cur3, "ADim")
+     {
+      if(VS(cur3->hook,"InConsortium")==0)
+       WRITES(cur3->hook,"X",VS(cur3,"x"));
+     }
+
+   }
+  v[11]=V("FunFitness");
+  if(v[10]<v[11])
+   v[0]++;
+  v[1]+=v[11];
+ }
+v[12]=V("CriterionConsortium");
+
+if(v[12]==1)
+ {//Majority rule, mutation accepted if the majority gains
+  if(v[0]>v[21]/2)
+   v[22]=1;
+  else
+   v[22]=0; 
+ }
+if(v[12]==2)
+ {//Average rule, mutation accepted if the sum of fitness icnreases
+  if(v[1]>v[20])
+   v[22]=1;
+  else
+   v[22]=0;  
+ }
+
+if(v[22]==0)
+ {
+  CYCLE(cur, "CDim")
+   {
+    v[30]=VS(cur,"cXtemp");
+    WRITES(cur,"cX",v[30]);
+    WRITES(cur,"capp",1);
+   }
+    
+ } 
+else
+ INCR("SuccCMutation",1);
+
+ 
+  
+ 
+RESULT(v[22] )
+
+
+EQUATION("CInit")
+/*
+Initialization of the consortium
+*/
+
+v[1]=V("N");
+v[0]=V("numDimConsortium");
+ADDNOBJ("CDim",v[1]-1);
+
+v[3]=1;
+v[5]=V("Minx");
+v[6]=V("Maxx");
+v[21]=V("D");
+
+CYCLE(cur, "CDim")
+ {
+  cur1=SEARCH_CND("IdDim",v[3]);
+  cur->hook=cur1;
+  cur1->hook=cur;
+  WRITES(cur1,"InConsortium",1);  
+  WRITES(cur,"IdCDim",v[3]++);
+  v[13]=UNIFORM(v[5],v[6]);
+  v[23]=round(v[13]/v[21]);
+  v[24]=v[23]*v[21];
+  v[7]=v[24];
+  WRITES(cur,"cX",v[7]);
+
+ }
+
+for(v[2]=0; v[2]<v[1]-v[0]; v[2]++)
+ {
+  cur=RNDDRAWFAIR("CDim");
+  cur->hook->hook=NULL;
+  WRITES(cur->hook,"InConsortium",0);
+  DELETE(cur);
+ }
+PARAMETER;
+RESULT(1 )
 
 
 EQUATION("InitAgent")
