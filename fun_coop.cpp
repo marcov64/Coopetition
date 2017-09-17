@@ -314,7 +314,9 @@ EQUATION("ConsortiumRD")
 Research in the Consortium
 */
 
-
+v[1]=V("numDimConsortium");
+if(v[1]==0)
+ END_EQUATION(0);
 CYCLE(cur, "CDim")
  {
   v[0]=VS(cur,"cX");
@@ -323,7 +325,7 @@ CYCLE(cur, "CDim")
   WRITES(cur,"capp",1);
  }
 
-v[1]=V("numDimConsortium");
+
 v[2]=rnd_integer(1,v[1]);
 v[4]=V("D");
 for(v[3]=0; v[3]<v[2]; v[3]++)
@@ -340,7 +342,7 @@ cur=SEARCHS(p->up,"Class");
 
 CYCLES(cur, cur1, "Agent")
  {v[21]++;
-  v[10]=VS(cur,"Fit");
+  v[10]=VS(cur1,"Fit");
   v[20]+=v[10];
   CYCLES(cur1, cur2, "Block")
    {
@@ -358,16 +360,19 @@ CYCLES(cur, cur1, "Agent")
  }
 v[12]=V("CriterionConsortium");
 
+v[13]=V("ShareAccept");
+
 if(v[12]==1)
  {//Majority rule, mutation accepted if the majority gains
-  if(v[0]>v[21]/2)
+  v[13]=V("ShareAccept");
+  if(v[0]>v[21]*v[13])
    v[22]=1;
   else
    v[22]=0; 
  }
 if(v[12]==2)
- {//Average rule, mutation accepted if the sum of fitness icnreases
-  if(v[1]>v[20])
+ {//Average rule, mutation accepted if the sum of fitness increases
+  if(v[1]>v[20]*v[13])
    v[22]=1;
   else
    v[22]=0;  
@@ -399,6 +404,8 @@ Initialization of the consortium
 
 v[1]=V("N");
 v[0]=V("numDimConsortium");
+if(v[0]==0)
+ END_EQUATION(0);
 ADDNOBJ("CDim",v[1]-1);
 
 v[3]=1;

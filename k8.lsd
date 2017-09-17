@@ -131,7 +131,7 @@ Func: FunFitness 0 n + n n
 Param: D 0 n + n n	0.01	0.01	0.01	0.01
 Var: InitA 0 n + n n
 Param: aij 0 n + n n	1	1	1	1
-Param: Group 0 s + n n	4	4	4	4
+Param: Group 0 s + n n	8	8	8	8
 Func: ComputeFit 0 n + n n
 Param: N 0 n + n n	24	24	24	24
 Param: AllEqual 0 n + n n	0	0	0	0
@@ -191,7 +191,7 @@ Param: numDimConsortium 0 n + n n	0	3	6	9
 Param: CriterionConsortium 0 n + n n	2	2	2	2
 Var: ConsortiumRD 0 n + n n
 Param: SuccCMutation 0 s + n n	0	0	0	0
-Param: ShareAccept 0 n + n n	0.7	0.7	0.7	0.7
+Param: ShareAccept 0 n + n n	0.5	0.5	0.5	0.5
 
 Object: CDim C	1	1	1	1
 Param: IdCDim 0 n + n n	0	0	0	0
@@ -200,7 +200,7 @@ Param: cXtemp 0 n + n n	0	0	0	0
 Param: capp 0 n + n n	0	0	0	0
 
 SIM_NUM 1
-SEED 1
+SEED 2
 MAX_STEP 30000
 EQUATION fun_testfunction.cpp
  MODELREPORT modelreport.html
@@ -291,7 +291,7 @@ Parameter_Group
 
 (no description available)
 _INIT_
- All 2 instances equal to 4.
+ All 4 instances equal to 8.
 END_DESCRIPTION
 
 Function_ComputeFit
@@ -788,7 +788,7 @@ END_DESCRIPTION
 Parameter_ShareAccept
 (no description available)
 _INIT_
- All 4 instances equal to 0.7.
+ All 4 instances equal to 0.5.
 END_DESCRIPTION
 
 Object_CDim
