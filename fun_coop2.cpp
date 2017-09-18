@@ -208,10 +208,28 @@ EQUATION("ShiftFrontier")
 /*
 Comment
 */
-cur=RNDDRAWFAIR("Dim");
 v[0]=V("ShiftOpt");
+if(v[0]==0)
+ END_EQUATION(0);
+CYCLE(cur1, "Pop")
+ {
+  CYCLES(cur1, cur, "Agent")
+   {
+   VS(cur,"Fit");
+   }
+ }
+
+cur=RNDDRAWFAIR("Dim");
 INCRS(cur,"XOptimal",v[0]);
 
+CYCLE(cur1, "Pop")
+ {
+  CYCLES(cur1, cur, "Agent")
+   {
+    v[2]=V_CHEAT("ComputeFit",cur);
+    WRITELS(cur,"Fit",v[2], t);
+   }
+ }
 
 RESULT(1 )
 
@@ -304,6 +322,15 @@ Initialize all worlds
 CYCLE(cur, "World")
  {
   VS(cur,"InitA");
+  CYCLES(cur, cur1, "Pop")
+   {
+    CYCLES(cur1, cur2, "Class")
+     {
+      VS(cur2,"InitAgent");
+     }
+
+   }
+
   VS(cur,"CInit");
  }
 PARAMETER
@@ -328,7 +355,7 @@ CYCLE(cur, "CDim")
 v[12]=V("CriterionConsortium");
 v[13]=V("ShareAccept");
 v[14]=V("NumTrials");
-v[22]=0;
+v[22]=v[70]=0;
 v[4]=V("D");
 cur3=SEARCHS(p->up,"Class");
 
@@ -358,7 +385,7 @@ for(v[15]=0; v[15]<v[14]; v[15]++)
    {//Majority rule, mutation accepted if the majority gains
     v[13]=V("ShareAccept");
     if(v[0]>v[21]*v[13] && v[0]>=v[23])
-     {
+     {v[70]++;
       v[23]=v[0];
       v[22]=1;
       CYCLE(cur, "CDim")
@@ -372,7 +399,7 @@ for(v[15]=0; v[15]<v[14]; v[15]++)
    {//Average rule, mutation accepted if the sum of fitness increases
     
     if(v[1]>v[20]*v[13] && v[1]>=v[24])
-     {
+     {v[70]++;
       v[22]=1;
       v[24]=v[1];
       CYCLE(cur, "CDim")
@@ -409,7 +436,7 @@ for(v[15]=0; v[15]<v[14]; v[15]++)
     INCR("SuccCMutation",1);
    }
  
-  
+  WRITE("SuccTrials",v[70]);
  
 RESULT(v[22] )
 
