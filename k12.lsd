@@ -1,0 +1,888 @@
+	
+Label Root
+{
+	Son: World
+	Label World
+	{
+		Son: Dim
+		Label Dim
+		{
+			Son: Link
+			Label Link
+			{
+				Param: IdLink
+				Param: a
+
+			}
+
+			Param: IdDim
+			Func: FContr
+			Param: X
+			Func: mu
+			Var: c
+			Param: beta
+			Param: Xc
+			Param: FC_rec
+			Param: app
+			Param: Xfin
+			Param: numLink
+			Param: XOptimal
+			Param: InConsortium
+
+		}
+
+		Son: Pop
+		Label Pop
+		{
+			Son: Class
+			Label Class
+			{
+				Son: Agent
+				Label Agent
+				{
+					Son: Block
+					Label Block
+					{
+						Son: ADim
+						Label ADim
+						{
+							Param: IdADim
+							Param: x
+							Param: adflag
+							Param: xtemp
+
+						}
+
+						Param: IdBlock
+						Param: NDimBlock
+
+					}
+
+					Var: Fit
+					Param: CounterMutation
+					Param: SuccessMutation
+					Param: MutatedBit
+					Param: DiffMutFit
+
+				}
+
+				Var: InitAgent
+				Var: AvFit
+				Param: AvSucMut
+				Param: AvMutBit
+
+			}
+
+			Param: Minx
+			Param: Maxx
+
+		}
+
+		Son: Consortium
+		Label Consortium
+		{
+			Son: CDim
+			Label CDim
+			{
+				Param: IdCDim
+				Param: cX
+				Param: cXtemp
+				Param: capp
+				Param: cXbest
+
+			}
+
+			Var: CInit
+			Param: numDimConsortium
+			Param: CriterionConsortium
+			Var: ConsortiumRD
+			Param: SuccCMutation
+			Param: ShareAccept
+			Param: NumTrials
+
+		}
+
+		Var: ShiftFrontier
+		Func: FunFitness
+		Param: D
+		Var: InitA
+		Param: aij
+		Param: Group
+		Func: ComputeFit
+		Param: N
+		Param: AllEqual
+		Param: FairMutation
+		Param: ShiftOpt
+		Param: AGroup
+
+	}
+
+	Var: Init
+
+}
+
+
+DATA
+
+Object: Root C	1
+Var: Init 0 n + d n
+
+Object: World C	2
+Var: ShiftFrontier 0 n + n n
+Func: FunFitness 0 n + n n
+Param: D 0 n + n n	0.01	0.01
+Var: InitA 0 n + n n
+Param: aij 0 n + n n	1	1
+Param: Group 0 s + n n	12	12
+Func: ComputeFit 0 n + n n
+Param: N 0 n + n n	12	12
+Param: AllEqual 0 n + n n	0	0
+Param: FairMutation 0 n + n n	0	0
+Param: ShiftOpt 0 n + n n	0	0
+Param: AGroup 0 s + n n	2	2
+
+Object: Dim C	1	1
+Param: IdDim 0 n + n n	1	1
+Func: FContr 0 n + n n
+Param: X 0 n + n n	0	0
+Func: mu 0 n + n n
+Var: c 0 n + n n
+Param: beta 0 n + n n	0	0
+Param: Xc 0 n + n n	0	0
+Param: FC_rec 0 n + n n	0	0
+Param: app 0 n + n n	0	0
+Param: Xfin 0 n + n n	0	0
+Param: numLink 0 n + n n	0	0
+Param: XOptimal 1 n + n n	100	100
+Param: InConsortium 0 n + n n	0	0
+
+Object: Link C	1	1
+Param: IdLink 0 n + n n	2	2
+Param: a 0 n + n n	1	1
+
+Object: Pop C	1	1
+Param: Minx 0 n + n n	98	98
+Param: Maxx 0 n + n n	102	102
+
+Object: Class C	1	1
+Var: InitAgent 0 n + d n
+Var: AvFit 0 s + d p
+Param: AvSucMut 0 s + n n	0	0
+Param: AvMutBit 0 s + n n	0	0
+
+Object: Agent C	100	100
+Var: Fit 0 n + n n
+Param: CounterMutation 0 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Param: SuccessMutation 0 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Param: MutatedBit 0 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Param: DiffMutFit 0 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+
+Object: Block C	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1
+Param: IdBlock 0 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Param: NDimBlock 0 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+
+Object: ADim C	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1
+Param: IdADim 0 n + n n	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1
+Param: x 0 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Param: adflag 0 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Param: xtemp 0 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+
+Object: Consortium C	1	1
+Var: CInit 0 n + n n
+Param: numDimConsortium 0 n + n n	0	4
+Param: CriterionConsortium 0 n + n n	1	1
+Var: ConsortiumRD 0 n + d n
+Param: SuccCMutation 0 s + n n	0	0
+Param: ShareAccept 0 n + n n	0.5	0.5
+Param: NumTrials 0 n + n n	50	50
+
+Object: CDim C	1	1
+Param: IdCDim 0 n + n n	0	0
+Param: cX 0 n + n n	0	0
+Param: cXtemp 0 n + n n	0	0
+Param: capp 0 n + n n	0	0
+Param: cXbest 0 n + n n	0	0
+
+SIM_NUM 1
+SEED 2
+MAX_STEP 30000
+EQUATION fun_testfunction.cpp
+ MODELREPORT modelreport.html
+
+DESCRIPTION
+
+Object_Root
+(no description available)
+END_DESCRIPTION
+
+Variable_Init
+
+
+
+
+
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Object_World
+
+
+
+
+
+(no description available )
+_INIT_
+
+END_DESCRIPTION
+
+Variable_ShiftFrontier
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Function_FunFitness
+
+
+
+
+
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_D
+
+
+
+
+
+(no description available)
+_INIT_
+ All 30 instances equal to 0.01.
+END_DESCRIPTION
+
+Variable_InitA
+
+
+
+
+
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_aij
+
+
+
+
+
+(no description available)
+_INIT_
+ All 30 instances set ranging from 0 to 1 (i.e. increments of 0.0344828).
+END_DESCRIPTION
+
+Parameter_Group
+
+
+
+
+
+(no description available)
+_INIT_
+ All 4 instances equal to 12.
+END_DESCRIPTION
+
+Function_ComputeFit
+
+
+
+
+
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_N
+
+
+
+
+
+(no description available)
+_INIT_
+ All 2 instances equal to 12.
+END_DESCRIPTION
+
+Parameter_AllEqual
+
+
+
+
+
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_FairMutation
+
+
+
+
+
+(no description available)
+_INIT_
+ All 16 instances equal to 0.
+END_DESCRIPTION
+
+Parameter_ShiftOpt
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_AGroup
+
+
+
+
+
+(no description available)
+_INIT_
+ All 1 instances equal to 4.
+END_DESCRIPTION
+
+Object_Dim
+
+
+
+
+
+(no description available )
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_IdDim
+
+
+
+
+
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Function_FContr
+
+
+
+
+
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_X
+
+
+
+
+
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Function_mu
+
+
+
+
+
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Variable_c
+
+
+
+
+
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_beta
+
+
+
+
+
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_Xc
+
+
+
+
+
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_FC_rec
+
+
+
+
+
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_app
+
+
+
+
+
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_Xfin
+
+
+
+
+
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_numLink
+
+
+
+
+
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_XOptimal
+(no description available)
+_INIT_
+ All 2 instances equal to 100.
+END_DESCRIPTION
+
+Parameter_InConsortium
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Object_Link
+
+
+
+
+
+(no description available )
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_IdLink
+
+
+
+
+
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_a
+
+
+
+
+
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Object_Pop
+
+
+
+
+
+(no description available )
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_Minx
+
+
+
+
+
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_Maxx
+
+
+
+
+
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Object_Class
+
+
+
+
+
+(no description available )
+_INIT_
+
+END_DESCRIPTION
+
+Variable_InitAgent
+
+
+
+
+
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Variable_AvFit
+
+
+
+
+
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_AvSucMut
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_AvMutBit
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Object_Agent
+
+
+
+
+
+(no description available )
+_INIT_
+
+END_DESCRIPTION
+
+Variable_Fit
+
+
+
+
+
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_CounterMutation
+
+
+
+
+
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_SuccessMutation
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_MutatedBit
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_DiffMutFit
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Object_Block
+
+
+
+
+
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_IdBlock
+
+
+
+
+
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_NDimBlock
+
+
+
+
+
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Object_ADim
+
+
+
+
+
+(no description available )
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_IdADim
+
+
+
+
+
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_x
+
+
+
+
+
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_adflag
+
+
+
+
+
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_xtemp
+
+
+
+
+
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Object_Consortium
+(no description available )
+_INIT_
+
+END_DESCRIPTION
+
+Variable_CInit
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_numDimConsortium
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_CriterionConsortium
+(no description available)
+_INIT_
+ All 4 instances equal to 1.
+END_DESCRIPTION
+
+Variable_ConsortiumRD
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_SuccCMutation
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_ShareAccept
+(no description available)
+_INIT_
+ All 4 instances equal to 0.5.
+END_DESCRIPTION
+
+Parameter_NumTrials
+(no description available)
+_INIT_
+ All 4 instances equal to 50.
+END_DESCRIPTION
+
+Object_CDim
+(no description available )
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_IdCDim
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_cX
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_cXtemp
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_capp
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_cXbest
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+
+DOCUOBSERVE
+ShiftFrontier
+mu
+Xc
+app
+
+END_DOCUOBSERVE
+
+
+DOCUINITIAL
+Root
+aij
+IdDim
+Xc
+a
+IdADim
+
+END_DOCUINITIAL
+
+
+EQ_FILE
+#include "fun_head.h"
+
+MODELBEGIN
+
+
+
+
+
+
+
+
+
+
+
+MODELEND
+
+
+
+
+void close_sim(void)
+{
+
+}
+
+
+
+END_EQ_FILE

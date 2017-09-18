@@ -88,6 +88,7 @@ Label Root
 				Param: cX
 				Param: cXtemp
 				Param: capp
+				Param: cXbest
 
 			}
 
@@ -97,6 +98,7 @@ Label Root
 			Var: ConsortiumRD
 			Param: SuccCMutation
 			Param: ShareAccept
+			Param: NumTrials
 
 		}
 
@@ -188,16 +190,18 @@ Param: xtemp 0 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 Object: Consortium C	1	1	1	1
 Var: CInit 0 n + n n
 Param: numDimConsortium 0 n + n n	0	3	6	9
-Param: CriterionConsortium 0 n + n n	2	2	2	2
-Var: ConsortiumRD 0 n + n n
+Param: CriterionConsortium 0 n + n n	1	1	1	1
+Var: ConsortiumRD 0 n + d n
 Param: SuccCMutation 0 s + n n	0	0	0	0
-Param: ShareAccept 0 n + n n	1	1	1	1
+Param: ShareAccept 0 n + n n	0.5	0.5	0.5	0.5
+Param: NumTrials 0 n + n n	50	50	50	50
 
 Object: CDim C	1	1	1	1
 Param: IdCDim 0 n + n n	0	0	0	0
 Param: cX 0 n + n n	0	0	0	0
 Param: cXtemp 0 n + n n	0	0	0	0
 Param: capp 0 n + n n	0	0	0	0
+Param: cXbest 0 n + n n	0	0	0	0
 
 SIM_NUM 1
 SEED 2
@@ -770,7 +774,7 @@ END_DESCRIPTION
 Parameter_CriterionConsortium
 (no description available)
 _INIT_
- All 4 instances equal to 2.
+ All 4 instances equal to 1.
 END_DESCRIPTION
 
 Variable_ConsortiumRD
@@ -788,7 +792,13 @@ END_DESCRIPTION
 Parameter_ShareAccept
 (no description available)
 _INIT_
- All 4 instances equal to 1.
+ All 4 instances equal to 0.5.
+END_DESCRIPTION
+
+Parameter_NumTrials
+(no description available)
+_INIT_
+ All 4 instances equal to 50.
 END_DESCRIPTION
 
 Object_CDim
@@ -816,6 +826,12 @@ _INIT_
 END_DESCRIPTION
 
 Parameter_capp
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_cXbest
 (no description available)
 _INIT_
 

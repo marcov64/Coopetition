@@ -1,5 +1,5 @@
 TARGET=lsd_gnu
-FUN=fun_coop
+FUN=fun_coop2
 SWITCH_CC=-g
 SWITCH_CC_LNK=
 

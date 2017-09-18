@@ -188,7 +188,7 @@ Param: xtemp 0 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 Object: Consortium C	1	1	1	1
 Var: CInit 0 n + n n
 Param: numDimConsortium 0 n + n n	0	3	6	9
-Param: CriterionConsortium 0 n + n n	2	2	2	2
+Param: CriterionConsortium 0 n + n n	1	1	1	1
 Var: ConsortiumRD 0 n + n n
 Param: SuccCMutation 0 s + n n	0	0	0	0
 Param: ShareAccept 0 n + n n	0.7	0.7	0.7	0.7
@@ -770,7 +770,7 @@ END_DESCRIPTION
 Parameter_CriterionConsortium
 (no description available)
 _INIT_
- All 4 instances equal to 2.
+ All 4 instances equal to 1.
 END_DESCRIPTION
 
 Variable_ConsortiumRD

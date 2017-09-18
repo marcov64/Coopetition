@@ -325,63 +325,83 @@ CYCLE(cur, "CDim")
   WRITES(cur,"capp",1);
  }
 
-
-v[2]=rnd_integer(1,v[1]);
+v[12]=V("CriterionConsortium");
+v[13]=V("ShareAccept");
+v[14]=V("NumTrials");
+v[22]=0;
 v[4]=V("D");
-for(v[3]=0; v[3]<v[2]; v[3]++)
- {
+for(v[15]=0; v[15]<v[14]; v[15]++)
+{
   cur=RNDDRAW("CDim","capp");
   v[5]=RND<0.5?v[4]:v[4]*-1;
   INCRS(cur,"cX",v[5]);
-  WRITES(cur,"capp",0);
- }
 
-v[0]=v[1]=v[20]=v[21]=0;
-
-cur=SEARCHS(p->up,"Class");
-
-CYCLES(cur, cur1, "Agent")
- {v[21]++;
-  v[10]=VS(cur1,"Fit");
-  v[20]+=v[10];
-  v[11]=V_CHEAT("ComputeFit", cur1);
-  if(v[10]<v[11])
-   v[0]++;
-  v[1]+=v[11];
- }
-v[12]=V("CriterionConsortium");
-
-v[13]=V("ShareAccept");
-
-if(v[12]==1)
- {//Majority rule, mutation accepted if the majority gains
-  v[13]=V("ShareAccept");
-  if(v[0]>v[21]*v[13])
-   v[22]=1;
-  else
-   v[22]=0; 
- }
-if(v[12]==2)
- {//Average rule, mutation accepted if the sum of fitness increases
-  if(v[1]>v[20]*v[13])
-   v[22]=1;
-  else
-   v[22]=0;  
- }
-
-if(v[22]==0)
- {
-  CYCLE(cur, "CDim")
-   {
-    v[30]=VS(cur,"cXtemp");
-    WRITES(cur,"cX",v[30]);
-    WRITES(cur,"capp",1);
+  v[0]=v[1]=v[20]=v[21]=0;
+  cur=SEARCHS(p->up,"Class");
+  CYCLES(cur, cur1, "Agent")
+   {v[21]++;
+    v[10]=VS(cur1,"Fit");
+    v[20]+=v[10];
+    v[11]=V_CHEAT("ComputeFit",cur1);
+    if(v[10]<v[11])
+     v[0]++;
+    v[1]+=v[11];
    }
-    
- } 
-else
- INCR("SuccCMutation",1);
+  if(v[22]==0)
+   {
+    v[23]=v[0];
+    v[24]=v[1];
+   }  
 
+  if(v[12]==1)
+   {//Majority rule, mutation accepted if the majority gains
+    v[13]=V("ShareAccept");
+    if(v[0]>v[21]*v[13] && v[0]>=v[23])
+     {
+      v[23]=v[0];
+      v[22]=1;
+      CYCLE(cur, "CDim")
+       {
+        v[30]=VS(cur,"cX");
+        WRITES(cur,"cXbest",v[30]);
+       }
+     }  
+   }
+  if(v[12]==2)
+   {//Average rule, mutation accepted if the sum of fitness increases
+    
+    if(v[1]>v[20]*v[13] && v[1]>=v[24])
+     {
+      v[22]=1;
+      v[24]=v[1];
+      CYCLE(cur, "CDim")
+       {
+        v[30]=VS(cur,"cX");
+        WRITES(cur,"cXbest",v[30]);
+       }
+     } 
+   }
+  }
+  
+  if(v[22]==0)
+   {
+    CYCLE(cur, "CDim")
+     {
+      v[30]=VS(cur,"cXtemp");
+      WRITES(cur,"cX",v[30]);
+     }
+      
+   } 
+  else
+   {
+    CYCLE(cur, "CDim")
+     {
+      v[30]=VS(cur,"cXbest");
+      WRITES(cur,"cX",v[30]);
+     }
+
+    INCR("SuccCMutation",1);
+   }
  
   
  
